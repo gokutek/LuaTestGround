@@ -184,6 +184,32 @@ local function test_gfind1()
 	end
 end
 
+--字符串匹配模式
+local function test_patterns_1()
+	string.gsub("x123abc123abc123f", "()123()", print)
+	print("---")
+	string.gsub("x123abc123abc123f", "()%d()", print)
+	print("---")
+	string.gsub("x123abc123abc123f", "%d", print)
+	print("---")
+	string.gsub("x123abc123abc123f", "(%d)", print)
+	
+	
+	print(string.find("hello", "world"))
+end
+
+--测试函数的多个返回值
+local function test_return_multi_value()
+	local func = function(x,y)
+		return x+y,x-y,x*y,x/y
+	end
+	print(func(5,3))
+	--加两层括号，将只打印第一个返回值
+	print((func(5,3)))
+end
+
+
+
 table_array()
 table_map()
 test_string()
@@ -196,3 +222,5 @@ test_threeop()
 test_nil_key()
 test_func_param_count()
 test_gfind1()
+test_patterns_1()
+test_return_multi_value()

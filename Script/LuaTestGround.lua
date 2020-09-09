@@ -208,6 +208,7 @@ local function test_return_multi_value()
 	print((func(5,3)))
 end
 
+--测试全局变量
 local function test_global_val()
 	if abc == nil then
 		--下面的abc将定义在全局
@@ -218,10 +219,21 @@ local function test_global_val()
 	print(abc)
 end
 
+--测试全局变量
 local function test_global_val1()
 	--这里可以读到上面函数中定义的abc
 	assert(abc == 123456)
 	print(abc)
+end
+
+--测试#取长度
+local function test_sharp()
+	local tab = { 1, 2, 3}
+	assert(#tab == 3, "len is:" .. #tab)
+	
+	--加了一个键值，取到的长度并不会增加
+	tab["key1"] = 10
+	assert(#tab == 3, "len is:" .. #tab)
 end
 
 table_array()
@@ -240,3 +252,4 @@ test_patterns_1()
 test_return_multi_value()
 test_global_val()
 test_global_val1()
+test_sharp()

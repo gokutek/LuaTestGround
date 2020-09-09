@@ -236,6 +236,28 @@ local function test_sharp()
 	assert(#tab == 3, "len is:" .. #tab)
 end
 
+--测试调用有且只有一个参数的函数，不带()
+local function test_func_call_without_bracket()
+	local f1 = function(str)
+		print(str)
+	end
+	
+	f1 "helloworld"
+	
+	--[[
+	如果有2个或0个参数，必须要加()
+	local f2 = function(str1, str2)
+		print(str1 .. "," .. str2)
+	end
+	f2("helloworld", "fuck")
+	
+	local f0 = function()
+		print("what?")
+	end
+	f0()
+	--]]
+end
+
 table_array()
 table_map()
 test_string()
@@ -253,3 +275,4 @@ test_return_multi_value()
 test_global_val()
 test_global_val1()
 test_sharp()
+test_func_call_without_bracket()

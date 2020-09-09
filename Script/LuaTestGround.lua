@@ -184,7 +184,7 @@ local function test_gfind1()
 	end
 end
 
---字符串匹配模式
+--字符串匹配模式（捕获）
 local function test_patterns_1()
 	string.gsub("x123abc123abc123f", "()123()", print)
 	print("---")
@@ -194,7 +194,6 @@ local function test_patterns_1()
 	print("---")
 	string.gsub("x123abc123abc123f", "(%d)", print)
 	
-	
 	print(string.find("hello", "world"))
 end
 
@@ -203,12 +202,27 @@ local function test_return_multi_value()
 	local func = function(x,y)
 		return x+y,x-y,x*y,x/y
 	end
+	
 	print(func(5,3))
 	--加两层括号，将只打印第一个返回值
 	print((func(5,3)))
 end
 
+local function test_global_val()
+	if abc == nil then
+		--下面的abc将定义在全局
+		abc = 123456
+	end
+	
+	assert(abc == 123456)
+	print(abc)
+end
 
+local function test_global_val1()
+	--这里可以读到上面函数中定义的abc
+	assert(abc == 123456)
+	print(abc)
+end
 
 table_array()
 table_map()
@@ -224,3 +238,5 @@ test_func_param_count()
 test_gfind1()
 test_patterns_1()
 test_return_multi_value()
+test_global_val()
+test_global_val1()

@@ -258,6 +258,13 @@ local function test_func_call_without_bracket()
 	--]]
 end
 
+--定义一个临时数组并用下标访问
+local function test_def_and_use_array()
+	--注意要加上()
+	local val = ({1,2,3,4,5})[3]
+	assert(val == 3)
+end
+
 table_array()
 table_map()
 test_string()
@@ -276,3 +283,4 @@ test_global_val()
 test_global_val1()
 test_sharp()
 test_func_call_without_bracket()
+test_def_and_use_array()

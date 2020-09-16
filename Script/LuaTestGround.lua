@@ -265,6 +265,19 @@ local function test_def_and_use_array()
 	assert(val == 3)
 end
 
+local function test_cmp11()	
+	--虽然tom和jim两个对象的内容确实是相等的，但是比较的只是引用（指针）本身
+	local tom = { age=18 }
+	local jim = { age=18 }
+	assert(tom ~= jim)
+	
+	--table.insert插入的也是对象引用，而不会将对象拷贝一份
+	local tab = {}
+	table.insert(tab, tom)
+	tom.age = 20
+	assert(tab[1].age == 20)
+end
+
 table_array()
 table_map()
 test_string()
@@ -284,3 +297,4 @@ test_global_val1()
 test_sharp()
 test_func_call_without_bracket()
 test_def_and_use_array()
+test_cmp11()

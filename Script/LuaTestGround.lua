@@ -278,6 +278,36 @@ local function test_cmp11()
 	assert(tab[1].age == 20)
 end
 
+--os.date
+local function test_os_date()
+	--不带参数时，返回一个字符串
+	print(os.date())
+	
+	--带参数，返回一个table
+	local tab = os.date("*t")
+	for k, v in pairs(tab) do
+		print(k .. "=" .. tostring(v))
+	end
+	
+	--!表示世界时间
+	tab = os.date("!*t")
+	for k, v in pairs(tab) do
+		print(k .. "=" .. tostring(v))
+	end
+end
+
+--os.time
+local function test_os_time()
+	--不带参数，返回的是代表当前时间的秒数
+	assert(type(os.time()) == "number")
+	print(os.time())
+	
+	--带参数，返回的是该时刻的秒数
+	local date = os.date("*t")
+	date.sec = date.sec - 10
+	print(os.time(date))
+end
+
 table_array()
 table_map()
 test_string()
@@ -298,3 +328,5 @@ test_sharp()
 test_func_call_without_bracket()
 test_def_and_use_array()
 test_cmp11()
+test_os_date()
+test_os_time()

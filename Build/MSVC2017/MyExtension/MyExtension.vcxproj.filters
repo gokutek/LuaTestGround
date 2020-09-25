@@ -7,11 +7,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Source\MyExtension\MyExtension.h">
-      <Filter>src</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\..\Source\MyExtension\MyExtension.cpp">
       <Filter>src</Filter>
     </ClCompile>

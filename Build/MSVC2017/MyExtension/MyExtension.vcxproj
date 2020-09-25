@@ -150,9 +150,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Source\MyExtension\MyExtension.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\..\Source\MyExtension\MyExtension.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

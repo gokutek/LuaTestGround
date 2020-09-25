@@ -308,6 +308,38 @@ local function test_os_time()
 	print(os.time(date))
 end
 
+--loadstring
+local function test_loadstring()
+	--TODO:
+end
+
+local function test_bug01()
+	--在lua中，将table的某一个value赋值nil，在table中是不会存入这个key值的
+	local arr = { nil, nil, nil, nil }
+	assert(#arr == 0)
+end
+
+--ipairs与pairs：https://www.runoob.com/note/11315
+local function test_ipairs_pairs()
+	local tab =
+	{
+		[1] = 10,
+		[2] = 20,
+		[3] = 30,
+		[10] = 100,
+	}
+	
+	for k,v in ipairs(tab) do
+		print(k)
+	end
+	
+	print("---")
+	
+	for k,v in pairs(tab) do
+		print(k)
+	end
+end
+
 table_array()
 table_map()
 test_string()
@@ -330,3 +362,6 @@ test_def_and_use_array()
 test_cmp11()
 test_os_date()
 test_os_time()
+test_loadstring()
+test_bug01()
+test_ipairs_pairs()

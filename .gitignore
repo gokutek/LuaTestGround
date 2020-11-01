@@ -6,6 +6,10 @@
 *.pdb
 *.ilk
 *.exe
+*.dll
 *.lib
 *.vcxproj.user
 *.exp
+*VC.db
+x64/
+Debug/

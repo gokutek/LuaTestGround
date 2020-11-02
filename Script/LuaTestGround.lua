@@ -355,6 +355,27 @@ local function test_ipairs_pairs()
 	end
 end
 
+-- 测试内容：do ... end块的作用域
+local function test_do_end_block()
+	local x = 10
+	
+	do
+		local x = 100
+		x = 99
+		assert(x == 99)
+	end
+	
+	assert(x == 10)
+end
+
+-- 测试内容：for语句中的初始变量的作用域
+local function test_for_i()
+	local i = 100
+	for i=1,3 do
+	end
+	assert(i == 100)
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -382,3 +403,5 @@ test_os_time()
 test_loadstring()
 test_bug01()
 test_ipairs_pairs()
+test_do_end_block()          
+test_for_i()

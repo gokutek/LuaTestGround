@@ -10,5 +10,13 @@
     <ClCompile Include="..\..\..\Source\MyExtension\MyExtension.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\MyExtension\Animal.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Source\MyExtension\Animal.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

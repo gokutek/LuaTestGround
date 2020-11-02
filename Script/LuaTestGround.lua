@@ -355,6 +355,28 @@ local function test_ipairs_pairs()
 	end
 end
 
+--测试：计算还有多少秒到0点
+local function test_time_to_0()
+	--一天总共多少秒
+	local total_seconds = 24 * 60 * 60 
+	
+	--今天的开始时间（秒）
+	local date = os.date("*t")
+	date.hour = 0
+	date.min = 0
+	date.sec = 0
+	local start = os.time(date)
+	
+	--当前时间（秒）
+	local now = os.time()
+	
+	--今天已经过了的时间（秒）
+	local passed = os.difftime (now, start)
+	
+	--剩余时间
+	local ret = total_seconds - passed
+end
+
 -- 测试内容：do ... end块的作用域
 local function test_do_end_block()
 	local x = 10
@@ -403,5 +425,6 @@ test_os_time()
 test_loadstring()
 test_bug01()
 test_ipairs_pairs()
+test_time_to_0()
 test_do_end_block()          
 test_for_i()

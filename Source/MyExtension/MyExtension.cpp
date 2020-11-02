@@ -1,3 +1,5 @@
+#include "Animal.h"
+
 extern "C"
 {
 #include "lua.h"

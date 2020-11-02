@@ -2,48 +2,63 @@
     测试Lua语言本身的特性
 --]]
 
-
--- 当做数组来使用
-local function table_array()
-    local list = {}
-    table.insert(list, { name = "Tom", age = "12" })
-    table.insert(list, { name = "Lee", age = "13" })
-    table.insert(list, { name = "Jim", age = "14" })
-
-    -- 将输出索引：1,2,3
-    for k, v in pairs(list) do
-        print(k .. ":" .. v.name)
-    end
+--测试内容：删除表元素（这里测试删除最后一个元素仅仅是为了避免`#`语义的问题）
+local function test_table_del_element()
+	local t = { 1, 2, 3, 4, 5 }
+	assert(#t == 5)
+	t[5] = nil
+	assert(#t == 4)
 end
 
--- 当做map来使用
-local function table_map()
-    local map = {}
-    map["Tom"] = { name = "Tom", age = "12" }
-    map["Lee"] = { name = "Lee", age = "13" }
-    map["Jim"] = { name = "Jim", age = "14" }
+--测试内容：将浮点数作为key时，如果其小数部分为0，其将被转换为整数
+local function test_table_float_key()
+	local m = {}
+	m[2] = "2"
+	m[2.1] = "2.1"
+	assert(m[2] == "2")
+	assert(m[2.0] == "2")
+	assert(m[2.1] == "2.1")
+end
 
-    -- 将输出map的Key："Tom"、"Lee"、"Jim"
-    for k, v in pairs(map) do
-        print(k .. ":" .. v.age)
-    end
+-- 测试内容：#操作符（The Length Operator）
+local function test_table_len()
+	-- 没有空洞的数组
+	local t = { 1, 2, 3 }
+	assert(#t == 3)
 
-    -- 使用`#`取上面的map长度，返回0
-    assert(#map == 0)
+	-- 注意，下例中返回4，而不是2
+	local a = {}
+	a[1] = 1
+	a[2] = 2
+	a[3] = nil
+	a[4] = 4
+	assert(#a == 4)
+end
 
-    -- 删除某个键值对
-    print("delete key: Lee")
-    map["Lee"] = nil
-    for k, v in pairs(map) do
-        print(k .. ":" .. v.age)
-    end
+-- 测试内容：table.insert (list, [pos,] value)
+local function test_table_insert()
+	--pos默认是#list+1
+    local list = {}
+	table.insert(list, 10)
+	assert(list[#list] == 10)
+	table.insert(list, 20)
+	assert(list[#list] == 20)
+	table.insert(list, 30)
+	assert(list[#list] == 30)
+	--[[
+	--下面的代码将抛出异常：bad argument #2 to 'insert' (position out of bounds)
+	list = {}
+	list[1] = 10
+	list[5] = 50
+	table.insert(list, 6, 60)
+	--]]
 end
 
 -- 测试string
-local function test_string()
-    str="123 456"
+local function test_string_gmatch()
+    local str = "123 456"
     for k,v in str:gmatch("(%d+)") do
-        print(tostring(k))
+        print(k)
     end
 end
 
@@ -74,25 +89,25 @@ local function test_table_init2()
     end
 end
 
--- 获取table长度
-local function test_table_len()
-	gdEquipEnchantPromote = {}
+-- -- 获取table长度
+-- local function test_table_len()
+-- 	gdEquipEnchantPromote = {}
 	
-	gdEquipEnchantPromote[1] = {}
-	gdEquipEnchantPromote[2] = {}
-	gdEquipEnchantPromote[3] = {}
-	gdEquipEnchantPromote[4] = {}
-	gdEquipEnchantPromote[15] = {}
+-- 	gdEquipEnchantPromote[1] = {}
+-- 	gdEquipEnchantPromote[2] = {}
+-- 	gdEquipEnchantPromote[3] = {}
+-- 	gdEquipEnchantPromote[4] = {}
+-- 	gdEquipEnchantPromote[15] = {}
 	
-	--[[
-	table.getn已经废弃了
-	assert(4 == table.getn(gdEquipEnchantPromote))
-	print("gdEquipEnchantPromote lengths is: " .. tostring(table.getn(gdEquipEnchantPromote)))
-	--]]
+-- 	--[[
+-- 	table.getn已经废弃了
+-- 	assert(4 == table.getn(gdEquipEnchantPromote))
+-- 	print("gdEquipEnchantPromote lengths is: " .. tostring(table.getn(gdEquipEnchantPromote)))
+-- 	--]]
 	
-	assert(4 == #gdEquipEnchantPromote)
-	print("gdEquipEnchantPromote lengths is: " .. tostring(#gdEquipEnchantPromote))
-end
+-- 	assert(4 == #gdEquipEnchantPromote)
+-- 	print("gdEquipEnchantPromote lengths is: " .. tostring(#gdEquipEnchantPromote))
+-- end
 
 -- 测试变量作用域
 local function test_var_scope()
@@ -340,9 +355,11 @@ local function test_ipairs_pairs()
 	end
 end
 
-table_array()
-table_map()
-test_string()
+test_table_del_element()
+test_table_float_key()
+test_table_len()
+test_table_insert()
+test_string_gmatch()
 test_print_loaded_package()
 test_table_init2()
 test_table_len()

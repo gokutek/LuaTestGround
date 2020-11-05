@@ -398,6 +398,36 @@ local function test_for_i()
 	assert(i == 100)
 end
 
+-- 测试内容：goto的用法
+local function test_goto()
+	--[[下面的代码运行将报错
+	goto continue
+	local age = 18
+	::continue::
+	print(age)
+	--]]
+end
+
+-- 测试内容：闭包
+local function test_closure()
+
+	--调用foo函数将创建一个闭包，闭包里访问了外层变量mt
+	local foo = function(mt)
+		return function() return #mt end
+	end
+	
+	local arr = {1,2,3}
+	local func1 = foo(arr)
+	local func2 = foo(arr)
+	
+	assert(func1() == 3)
+	assert(func2() == 3)
+	
+	arr[4] = 4
+	assert(func1() == 4)
+	assert(func2() == 4)
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -428,3 +458,5 @@ test_ipairs_pairs()
 test_time_to_0()
 test_do_end_block()          
 test_for_i()
+test_goto()
+test_closure()

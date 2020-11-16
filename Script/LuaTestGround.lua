@@ -411,7 +411,7 @@ end
 -- 测试内容：闭包
 local function test_closure()
 
-	--调用foo函数将创建一个闭包，闭包里访问了外层变量mt
+	--调用foo函数将创建一个闭包，闭包里访问了外层变量mt，如果外层变量是引用类型，则闭包也包含该引用
 	local foo = function(mt)
 		return function() return #mt end
 	end
@@ -426,6 +426,13 @@ local function test_closure()
 	arr[4] = 4
 	assert(func1() == 4)
 	assert(func2() == 4)
+end
+
+local function test_require()
+	require("./MyLib")
+	require("MyLib")
+	require("MyLib")
+	require("./MyLib")
 end
 
 test_table_del_element()
@@ -460,3 +467,4 @@ test_do_end_block()
 test_for_i()
 test_goto()
 test_closure()
+test_require()

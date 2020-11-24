@@ -225,20 +225,18 @@ end
 
 --测试全局变量
 local function test_global_val()
-	if abc == nil then
+	do
 		--下面的abc将定义在全局
 		abc = 123456
 	end
 	
 	assert(abc == 123456)
-	print(abc)
 end
 
 --测试全局变量
 local function test_global_val1()
 	--这里可以读到上面函数中定义的abc
 	assert(abc == 123456)
-	print(abc)
 end
 
 --测试#取长度

@@ -435,6 +435,16 @@ local function test_require()
 	require("./MyLib")
 end
 
+--测试：load函数
+local function test_load()
+	local x = 100
+	local val = load("return " .. x)()
+	assert(val == 100)
+	
+	local func = load("print('hello world')")
+	func()
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -468,3 +478,4 @@ test_for_i()
 test_goto()
 test_closure()
 test_require()
+test_load()

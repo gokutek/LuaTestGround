@@ -2,6 +2,16 @@
     测试Lua语言本身的特性
 --]]
 
+--判断数组是否已排序（升序）
+local function is_table_sorted(t)
+	for i=2,#t do
+		if t[i] < t[i-1] then
+			return false
+		end
+	end
+	return true
+end
+
 --测试内容：删除表元素（这里测试删除最后一个元素仅仅是为了避免`#`语义的问题）
 local function test_table_del_element()
 	local t = { 1, 2, 3, 4, 5 }
@@ -427,10 +437,12 @@ local function test_closure()
 end
 
 local function test_require()
+--[[
 	require("./MyLib")
 	require("MyLib")
 	require("MyLib")
 	require("./MyLib")
+--]]
 end
 
 --测试：load函数
@@ -441,6 +453,32 @@ local function test_load()
 	
 	local func = load("print('hello world')")
 	func()
+end
+
+--测试：key顺序
+local function test_pairs_order()
+	local t = {
+		[927038]= {cost_count=0,cost_honour=20000,cost_sid=0,sid=927038,},
+		[927039]= {cost_count=0,cost_honour=15000,cost_sid=0,sid=927039,},
+		[927040]= {cost_count=0,cost_honour=5000,cost_sid=0,sid=927040,},
+		[927041]= {cost_count=0,cost_honour=5000,cost_sid=0,sid=927041,},
+		[927042]= {cost_count=0,cost_honour=5000,cost_sid=0,sid=927042,},
+		[927043]= {cost_count=0,cost_honour=5000,cost_sid=0,sid=927043,},
+		[927044]= {cost_count=0,cost_honour=5000,cost_sid=0,sid=927044,},
+		[927045]= {cost_count=0,cost_honour=5000,cost_sid=0,sid=927045,},
+	}
+	
+	--使用pairs遍历table,并将key保存下来
+	local keys = {}
+	for sid, sd in pairs(t) do
+		keys[#keys+1] = sid
+	end
+	
+	--遍历顺序并不是定义t时的顺序，也不是升序
+	assert(not is_table_sorted(keys))
+	
+	table.sort(keys, function(a,b) return a < b end)
+	assert(is_table_sorted(keys))
 end
 
 --测试：_ENV
@@ -497,5 +535,6 @@ test_goto()
 test_closure()
 test_require()
 test_load()
+test_pairs_order()
 test_ENV()
 test_single_str_param()

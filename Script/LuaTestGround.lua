@@ -443,6 +443,26 @@ local function test_load()
 	func()
 end
 
+--测试：_ENV
+local function test_ENV()
+	-- _ENV = nil
+	-- print("this is error")
+	-- itIsError = 10
+	assert(_ENV == _G)
+end
+
+--测试：只有一个字符串参数的函数，调用时省略括号
+local function test_single_str_param()
+	local function func1(str)
+		return str
+	end
+	
+	assert(func1("hello") == "hello")
+	assert((func1 "hello")  == "hello")
+
+	--func1 123 -- 编译失败，数值类型必须加括号
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -477,3 +497,5 @@ test_goto()
 test_closure()
 test_require()
 test_load()
+test_ENV()
+test_single_str_param()

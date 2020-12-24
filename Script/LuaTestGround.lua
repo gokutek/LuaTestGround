@@ -127,11 +127,9 @@ local function test_var_scope()
 		local val = 90
 		val = val + 1
 		assert(val == 91)
-		print("val=" .. val)
 	end
 	
 	assert(val == 100)
-	print("val=" .. val)
 end
 
 --测试正则匹配
@@ -262,10 +260,11 @@ end
 --测试调用有且只有一个参数的函数，不带()
 local function test_func_call_without_bracket()
 	local f1 = function(str)
-		print(str)
+		return str
 	end
-	
-	f1 "helloworld"
+
+	local x = f1 "helloworld"
+	assert(x == "helloworld")
 	
 	--[[
 	如果有2个或0个参数，必须要加()
@@ -501,6 +500,26 @@ local function test_single_str_param()
 	--func1 123 -- 编译失败，数值类型必须加括号
 end
 
+local function test_class()
+	local Account = { balance = 0 }
+
+	function Account:new(obj)
+		obj = obj or {}
+		self.__index = self
+		setmetatable(obj, self)
+		return obj
+	end
+
+	function Account:deposit(v)
+		self.balance = self.balance + v
+	end
+
+	local account = Account:new()
+	assert(account.balance == 0)
+	account:deposit(100)
+	assert(account.balance == 100)
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -538,3 +557,4 @@ test_load()
 test_pairs_order()
 test_ENV()
 test_single_str_param()
+test_class()

@@ -153,10 +153,10 @@ end
 
 --模拟“三目运算”
 local function test_threeop()
-	print(1 > 3 and 1 or 0)
-	print(1 > 3 and 0 or 1)
-	print(3 > 1 and 0 or 1)
-	print(3 > 1 and nil or 1)
+	assert((1 > 3 and 1 or 0) == 0)
+	assert((1 > 3 and 0 or 1) == 1)
+	assert((3 > 1 and 0 or 1) == 0)
+	assert((3 > 1 and nil or 1) == 1)
 	--[[
 	https://www.runoob.com/w3cnote/trinocular-operators-in-lua.html
 	运算符优先级从高到低为：not、and、or
@@ -170,7 +170,7 @@ end
 -- 测试nil作为key
 local function test_nil_key()
 	local tab = { 1, 2, 3 }
-	print(tab[1] == 1)
+	assert(tab[1] == 1)
 	assert(tab[nil] == nil)
 	
 	--[[运行时将报错
@@ -192,11 +192,6 @@ local function test_func_param_count()
 	assert(sum(1, 2) == 3)
 	assert(sum(1, 2, 3) == 6)
 	assert(sum(1, 2, 3, 4) == 6)
-	
-	print(sum(1))
-	print(sum(1, 2))
-	print(sum(1, 2, 3))
-	print(sum(1, 2, 3, 4))
 end
 
 local function test_gfind1()
@@ -210,11 +205,8 @@ end
 --字符串匹配模式（捕获）
 local function test_patterns_1()
 	string.gsub("x123abc123abc123f", "()123()", print)
-	print("---")
 	string.gsub("x123abc123abc123f", "()%d()", print)
-	print("---")
 	string.gsub("x123abc123abc123f", "%d", print)
-	print("---")
 	string.gsub("x123abc123abc123f", "(%d)", print)
 	
 	print(string.find("hello", "world"))
@@ -226,9 +218,18 @@ local function test_return_multi_value()
 		return x+y,x-y,x*y,x/y
 	end
 	
-	print(func(5,3))
+	local x,y,z,w = func(6,3)
+	assert(x == 9)
+	assert(y == 3)
+	assert(z == 18)
+	assert(w == 2)
+
 	--加两层括号，将只打印第一个返回值
-	print((func(5,3)))
+	local x1,y1,z1,w1 = (func(6,3))
+	assert(x1 == 9)
+	assert(y1 == nil)
+	assert(z1 == nil)
+	assert(w1 == nil)
 end
 
 --测试全局变量
@@ -354,8 +355,6 @@ local function test_ipairs_pairs()
 	for k,v in ipairs(tab) do
 		print(k)
 	end
-	
-	print("---")
 	
 	for k,v in pairs(tab) do
 		print(k)

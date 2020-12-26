@@ -322,13 +322,15 @@ end
 --os.time
 local function test_os_time()
 	--不带参数，返回的是代表当前时间的秒数
-	assert(type(os.time()) == "number")
-	print(os.time())
+	local now = os.time()
+	assert(type(now) == "number")
 	
 	--带参数，返回的是该时刻的秒数
 	local date = os.date("*t")
+	assert(type(date) == "table")
 	date.sec = date.sec - 10
-	print(os.time(date))
+	local tm = os.time(date)
+	assert(tm == now - 10)
 end
 
 --loadstring

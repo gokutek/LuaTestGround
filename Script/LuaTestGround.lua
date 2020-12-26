@@ -94,9 +94,9 @@ local function test_table_init2()
         [ROLE_TYPE.PLAYER] = 5,
     }
 
-    for k, v in ipairs(m) do
-        print(tostring(k) .. ":" .. tostring(v))
-    end
+    assert(m[1] == 3)
+	assert(m[2] == 4)
+	assert(m[3] == 5)
 end
 
 -- -- 获取table长度
@@ -304,19 +304,24 @@ end
 --os.date
 local function test_os_date()
 	--不带参数时，返回一个字符串
-	print(os.date())
+	local date_str = os.date()
+	assert(type(date_str) == "string")
 	
 	--带参数，返回一个table
 	local tab = os.date("*t")
-	for k, v in pairs(tab) do
-		print(k .. "=" .. tostring(v))
-	end
-	
+	assert(type(tab.year) == "number")
+	assert(type(tab.month) == "number")
+	assert(type(tab.day) == "number")
+	assert(type(tab.hour) == "number")
+	assert(type(tab.min) == "number")
+	assert(type(tab.sec) == "number")
+	assert(type(tab.yday) == "number")
+	assert(type(tab.wday) == "number")
+	assert(type(tab.isdst) == "boolean")
+		
 	--!表示世界时间
-	tab = os.date("!*t")
-	for k, v in pairs(tab) do
-		print(k .. "=" .. tostring(v))
-	end
+	local world_date = os.date("!*t")
+	assert(world_date.hour == tab.hour - 8)
 end
 
 --os.time
@@ -447,12 +452,12 @@ end
 
 --测试：load函数
 local function test_load()
+	local func = load("return 666")
+	assert(666 == func())
+	
 	local x = 100
 	local val = load("return " .. x)()
 	assert(val == 100)
-	
-	local func = load("print('hello world')")
-	func()
 end
 
 --测试：key顺序
@@ -534,8 +539,8 @@ test_gmatch()
 test_threeop()
 test_nil_key()
 test_func_param_count()
-test_gfind1()
-test_patterns_1()
+--test_gfind1()
+--test_patterns_1()
 test_return_multi_value()
 test_global_val()
 test_global_val1()

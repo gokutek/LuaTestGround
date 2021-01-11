@@ -526,6 +526,28 @@ local function test_class()
 	assert(account.balance == 100)
 end
 
+--测试：`__index`
+local function test_index()
+	local a = {}
+	local b = {}
+	local c = {}
+	local d = {}
+	
+	setmetatable(a, b)
+	setmetatable(b, c)
+	setmetatable(c, d)
+	b.__index = c
+	c.__index = d
+
+	--
+	d.age = 18
+	assert(a.age == 18)
+
+	a.age = a.age + 10
+	assert(a.age == 28)
+	assert(d.age == 18)
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -564,3 +586,4 @@ test_pairs_order()
 test_ENV()
 test_single_str_param()
 test_class()
+test_index()

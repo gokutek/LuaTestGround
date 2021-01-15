@@ -528,24 +528,51 @@ end
 
 --测试：`__index`
 local function test_index()
-	local a = {}
-	local b = {}
-	local c = {}
-	local d = {}
+	local indexCalledCount = 0
+
+	local tab = {}
+	local mt = {}
+	setmetatable(tab, mt)
+	mt.__index = function(t, k)
+		indexCalledCount = indexCalledCount + 1
+		return rawget(t, k)
+	end
+
+	--tab中不存在name字段，会触发__index元方法调用
+	local v = tab.name
+	assert(indexCalledCount == 1)
+
+	--tab中不存在name字段，会触发__index元方法调用
+	v = tab.name
+	assert(indexCalledCount == 2)
 	
-	setmetatable(a, b)
-	setmetatable(b, c)
-	setmetatable(c, d)
-	b.__index = c
-	c.__index = d
+	tab.name = "lazy"
+	
+	--tab中存在name字段，不会触发__index元方法调用
+	v = tab.name
+	assert(indexCalledCount == 2)
+end
 
-	--
-	d.age = 18
-	assert(a.age == 18)
+--测试：递归的`__index`
+local function test_rec_index()
+	-- local a = {}
+	-- local b = {}
+	-- local c = {}
+	-- local d = {}
+	
+	-- setmetatable(a, b)
+	-- setmetatable(b, c)
+	-- setmetatable(c, d)
+	-- b.__index = c
+	-- c.__index = d
 
-	a.age = a.age + 10
-	assert(a.age == 28)
-	assert(d.age == 18)
+	-- --
+	-- d.age = 18
+	-- assert(a.age == 18)
+
+	-- a.age = a.age + 10
+	-- assert(a.age == 28)
+	-- assert(d.age == 18)
 end
 
 test_table_del_element()
@@ -587,3 +614,4 @@ test_ENV()
 test_single_str_param()
 test_class()
 test_index()
+test_rec_index()

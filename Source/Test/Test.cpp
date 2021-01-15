@@ -3,6 +3,7 @@
 #include <limits>
 #include <stdint.h>
 #include <iostream>
+#include <windows.h>
 
 extern "C"
 {
@@ -10,47 +11,48 @@ extern "C"
 #include "lauxlib.h"
 }
 
-class UImage
-{
-public:
-	int SetImage(const char* str)
-	{
-		std::cout << str << std::endl;
-		return 0;
-	}
-};
-
 
 static int pmain(lua_State *L)
 {
 	int argc = (int)lua_tointeger(L, 1);
 	char **argv = (char **)lua_touserdata(L, 2);
-	lua_pushinteger(L, std::numeric_limits<int64_t>::max());
+	lua_pushinteger(L, 0);
 	return 1;
 }
 
-
 int main(int argc, char** argv)
 {
-	lua_State *L = luaL_newstate();
-	if (nullptr == L) 
-	{
-		return EXIT_FAILURE;
-	}
+	wchar_t szWorkDir[MAX_PATH] = { 0 };
+	GetModuleFileNameW(NULL, szWorkDir, sizeof(szWorkDir));
+	*wcsrchr(szWorkDir, '\\') = 0;
+	SetCurrentDirectoryW(szWorkDir);
 
+	lua_State *L = luaL_newstate();
 	lua_pushcfunction(L, &pmain);  /* to call 'pmain' in protected mode */
 	lua_pushinteger(L, argc);  /* 1st argument */
 	lua_pushlightuserdata(L, argv); /* 2nd argument */
 	int status = lua_pcall(L, 2, 1, 0);  /* do the call */
 	int result = lua_toboolean(L, -1);  /* get result */
 
-	int64_t exp = std::numeric_limits<int64_t>::max();
-	int64_t x = lua_tointeger(L, 1);
-	assert(x == exp);
-
-	UImage* Image = new UImage();
-
+	int x = lua_tointeger(L, 1);
+	assert(x == 0);
 
 	lua_close(L);
-	return (result && status == LUA_OK) ? EXIT_SUCCESS : EXIT_FAILURE;
-}
+	return EXIT_SUCCESS;
+} 
+
+
+/*
+===============================================================================
+测试用例1：
+在lua中可以使用C++对象Image
+```
+local img = Image.new()
+img:method()
+img = nil
+```
+
+测试用例2：
+
+===============================================================================
+*/

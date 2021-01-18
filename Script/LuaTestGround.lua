@@ -575,6 +575,13 @@ local function test_rec_index()
 	-- assert(d.age == 18)
 end
 
+local function test_str_int_key()
+	-- "6"和6是不同的key
+	local t = {}
+	t["6"] = 666
+	assert(t[6] == nil)
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -615,3 +622,4 @@ test_single_str_param()
 test_class()
 test_index()
 test_rec_index()
+test_str_int_key()

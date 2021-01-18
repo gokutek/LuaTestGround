@@ -4,13 +4,7 @@
 #include <stdint.h>
 #include <iostream>
 #include <windows.h>
-
-extern "C"
-{
-#include "lua.h"
-#include "lauxlib.h"
-}
-
+#include "lua.hpp"
 
 static int pmain(lua_State *L)
 {
@@ -34,7 +28,7 @@ int main(int argc, char** argv)
 	int status = lua_pcall(L, 2, 1, 0);  /* do the call */
 	int result = lua_toboolean(L, -1);  /* get result */
 
-	int x = lua_tointeger(L, 1);
+	lua_Integer x = lua_tointeger(L, 1);
 	assert(x == 0);
 
 	lua_close(L);

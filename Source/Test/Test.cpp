@@ -6,6 +6,22 @@
 #include <windows.h>
 #include "lua.hpp"
 
+static void test_lua_type()
+{
+	lua_State* L = luaL_newstate();
+
+	// 虽然可以向栈中放integer和number，但它们的类型都是LUA_TNUMBER
+	lua_pushinteger(L, 1);
+	int type = lua_type(L, -1);
+	assert(type == LUA_TNUMBER);
+
+	lua_pushnumber(L, 1.23);
+	type = lua_type(L, -1);
+	assert(type == LUA_TNUMBER);
+
+	lua_close(L);
+}
+
 static int pmain(lua_State *L)
 {
 	int argc = (int)lua_tointeger(L, 1);
@@ -16,6 +32,8 @@ static int pmain(lua_State *L)
 
 int main(int argc, char** argv)
 {
+	test_lua_type();
+
 	wchar_t szWorkDir[MAX_PATH] = { 0 };
 	GetModuleFileNameW(NULL, szWorkDir, sizeof(szWorkDir));
 	*wcsrchr(szWorkDir, '\\') = 0;

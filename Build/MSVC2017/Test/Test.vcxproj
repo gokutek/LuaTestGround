@@ -21,6 +21,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\Test\Test.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\liblua\liblua.vcxproj">
+      <Project>{61a4f12f-4f57-477d-a1db-3158e1933831}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{67922E64-592E-47EA-9E2B-A0E7A554A73C}</ProjectGuid>

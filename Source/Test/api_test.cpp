@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <string.h>
 #include "lua.hpp"
 
 static void test_lua_type()
@@ -104,10 +105,31 @@ static void test_lua_tonumber()
 	lua_close(L);
 }
 
+static void test_table()
+{
+	lua_State* L = luaL_newstate();
+	
+	lua_newtable(L);				// 1,	-3
+	lua_pushstring(L, "key");		// 2,	-2
+	lua_pushstring(L, "value");		// 3,	-1
+	lua_settable(L, -3);
+	assert(lua_gettop(L) == 1);
+
+	lua_pushstring(L, "key");		// 2,	-1
+	lua_gettable(L, -2);
+	const char* value = lua_tostring(L, -1);
+	assert(!strcmp(value, "value"));
+	lua_pop(L, 1);
+	assert(lua_gettop(L) == 1);
+
+	lua_close(L);
+}
+
 void api_test_main()
 {
 	test_lua_type();
 	test_lua_rotate();
 	test_lua_is_number();
 	test_lua_tonumber();
+	test_table();
 }

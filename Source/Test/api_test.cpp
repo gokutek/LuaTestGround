@@ -109,14 +109,14 @@ static void test_table()
 {
 	lua_State* L = luaL_newstate();
 	
-	lua_newtable(L);				// 1,	-3
-	lua_pushstring(L, "key");		// 2,	-2
-	lua_pushstring(L, "value");		// 3,	-1
-	lua_settable(L, -3);
+	lua_newtable(L);				// 1
+	lua_pushstring(L, "key");		// 2
+	lua_pushstring(L, "value");		// 3
+	lua_settable(L, -3);			// 1
 	assert(lua_gettop(L) == 1);
 
-	lua_pushstring(L, "key");		// 2,	-1
-	lua_gettable(L, -2);
+	lua_pushstring(L, "key");		// 2
+	lua_gettable(L, -2);			// 2
 	const char* value = lua_tostring(L, -1);
 	assert(!strcmp(value, "value"));
 	lua_pop(L, 1);

@@ -127,12 +127,25 @@ static void test_table()
 	lua_close(L);
 }
 
+static void add_package_path(lua_State* L, const char* path)
+{
+	assert(path);
+	lua_getglobal(L, "package");	// [-0, +1, e]
+	lua_getfield(L, -1, "path");	// [-0, +1, e]
+	char final_path[1024];
+	sprintf_s(final_path, "%s;%s", lua_tostring(L, -1), path);
+	lua_pushstring(L, final_path);	// [-0, +1, m]
+	lua_setfield(L, -3, "path");	// [-1, +0, e]
+	lua_pop(L, 2);
+}
+
 static void test_print()
 {
 	int result;
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
-	result = luaL_loadfile(L, "api_test_loadfile.lua");
+	add_package_path(L, "../Script/?.lua");
+	result = luaL_loadfile(L, "../Script/api_test_loadfile.lua");
 	assert(result == 0);
 	lua_pcall(L, 0, LUA_MULTRET, 0);
  	lua_close(L);

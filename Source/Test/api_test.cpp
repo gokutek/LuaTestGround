@@ -15,6 +15,10 @@ static void test_lua_type()
 	type = lua_type(L, -1);
 	assert(type == LUA_TNUMBER);
 
+	lua_pushstring(L, "1.23");
+	type = lua_type(L, -1);
+	assert(type == LUA_TSTRING);
+
 	lua_close(L);
 }
 
@@ -119,8 +123,6 @@ static void test_table()
 	lua_gettable(L, -2);			// 2
 	const char* value = lua_tostring(L, -1);
 	assert(!strcmp(value, "value"));
-	lua_pop(L, 1);
-	assert(lua_gettop(L) == 1);
 
 	lua_close(L);
 }
@@ -133,3 +135,22 @@ void api_test_main()
 	test_lua_tonumber();
 	test_table();
 }
+
+/*
+===============================================================================
+http://www.lua.org/manual/5.4/
+API后面的[-o, +p, x]意思：
+The first field, o, is how many elements the function pops from the stack.
+The second field, p, is how many elements the function pushes onto the stack. 
+(Any function always pushes its results after popping its arguments.) A field 
+in the form x|y means the function can push (or pop) x or y elements, depending 
+on the situation; an interrogation mark '?' means that we cannot know how many 
+elements the function pops/pushes by looking only at its arguments. (For instance, 
+they may depend on what is in the stack.) The third field, x, tells whether the 
+function may raise errors: '-' means the function never raises any error; 'm' 
+means the function may raise only out-of-memory errors; 'v' means the function 
+may raise the errors explained in the text; 'e' means the function can run 
+arbitrary Lua code, either directly or through metamethods, and therefore may 
+raise any errors.
+===============================================================================
+*/

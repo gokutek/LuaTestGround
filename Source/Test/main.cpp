@@ -18,12 +18,12 @@ static int pmain(lua_State *L)
 
 int main(int argc, char** argv)
 {
-	api_test_main();
-
 	wchar_t szWorkDir[MAX_PATH] = { 0 };
 	GetModuleFileNameW(NULL, szWorkDir, sizeof(szWorkDir));
 	*wcsrchr(szWorkDir, '\\') = 0;
 	SetCurrentDirectoryW(szWorkDir);
+
+	api_test_main();
 
 	lua_State *L = luaL_newstate();
 	lua_pushcfunction(L, &pmain);  /* to call 'pmain' in protected mode */

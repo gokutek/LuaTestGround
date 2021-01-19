@@ -127,6 +127,17 @@ static void test_table()
 	lua_close(L);
 }
 
+static void test_print()
+{
+	int result;
+	lua_State* L = luaL_newstate();
+	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
+	result = luaL_loadfile(L, "api_test_loadfile.lua");
+	assert(result == 0);
+	lua_pcall(L, 0, LUA_MULTRET, 0);
+ 	lua_close(L);
+}
+
 void api_test_main()
 {
 	test_lua_type();
@@ -134,6 +145,7 @@ void api_test_main()
 	test_lua_is_number();
 	test_lua_tonumber();
 	test_table();
+	test_print();
 }
 
 /*

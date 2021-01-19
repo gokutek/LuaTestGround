@@ -148,6 +148,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lua.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\liblua\liblua.vcxproj">
+      <Project>{61a4f12f-4f57-477d-a1db-3158e1933831}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

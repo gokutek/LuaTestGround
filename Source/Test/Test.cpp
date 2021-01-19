@@ -74,10 +74,12 @@ static void test_lua_is_number()
 	assert(lua_isnumber(L, -1));
 	assert(lua_isinteger(L, -1));
 
+	// 这个字符串可以被转换为number，所以lua_isnumber仍然成立，奇怪的是lua_isinteger不成立
 	lua_pushstring(L, "1234");
 	assert(lua_isnumber(L, -1));
 	assert(!lua_isinteger(L, -1));
 
+	// 字符串不能转换为number
 	lua_pushstring(L, "hello");
 	assert(!lua_isnumber(L, -1));
 
@@ -86,6 +88,25 @@ static void test_lua_is_number()
 
 static void test_lua_tonumber()
 {
+	lua_State* L = luaL_newstate();
+
+	lua_pushinteger(L, 10);
+	lua_Number num = lua_tonumber(L, -1);
+	assert(num == 10);
+
+	lua_pushnumber(L, 12.34);
+	num = lua_tonumber(L, -1);
+	assert(num == 12.34);
+
+	lua_pushstring(L, "4567");
+	num = lua_tonumber(L, -1);
+	assert(num == 4567);
+
+	lua_pushstring(L, "67.89");
+	num = lua_tonumber(L, -1);
+	assert(num == 67.89);
+
+	lua_close(L);
 }
 
 static int pmain(lua_State *L)
@@ -101,6 +122,7 @@ int main(int argc, char** argv)
 	test_lua_type();
 	test_lua_rotate();
 	test_lua_is_number();
+	test_lua_tonumber();
 
 	wchar_t szWorkDir[MAX_PATH] = { 0 };
 	GetModuleFileNameW(NULL, szWorkDir, sizeof(szWorkDir));

@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Source\Test\Test.cpp" />
+    <ClCompile Include="..\..\..\Source\Test\api_test.cpp" />
+    <ClCompile Include="..\..\..\Source\Test\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\liblua\liblua.vcxproj">

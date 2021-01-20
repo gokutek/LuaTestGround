@@ -165,10 +165,18 @@ static void test_get_field()
 
 static void test_set_global()
 {
+	lua_State* L = luaL_newstate();
+	lua_pushstring(L, "WORLD");
+	lua_setglobal(L, "HELLO");	// [-1, +0, e]
+	lua_getglobal(L, "HELLO"); // [-0, +1, e]
+	const char* value = lua_tostring(L, -1);
+	assert(!strcmp(value, "WORLD"));
+	lua_close(L);
 }
 
 static void test_create_table()
 {
+	// lua_createtable内部有优化，实际上lua_newtable就是带有默认参数的lua_createtable
 }
 
 void api_test_main()

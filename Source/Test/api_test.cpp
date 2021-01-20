@@ -151,6 +151,26 @@ static void test_print()
  	lua_close(L);
 }
 
+static void test_get_field()
+{
+	lua_State* L = luaL_newstate();
+	lua_newtable(L);
+	lua_pushstring(L, "world");
+	lua_setfield(L, -2, "hello");	// [-1, +0, e]
+	lua_getfield(L, -1, "hello");
+	const char* value = lua_tostring(L, -1);
+	assert(!strcmp(value, "world"));
+	lua_close(L);
+}
+
+static void test_set_global()
+{
+}
+
+static void test_create_table()
+{
+}
+
 void api_test_main()
 {
 	test_lua_type();
@@ -159,6 +179,9 @@ void api_test_main()
 	test_lua_tonumber();
 	test_table();
 	test_print();
+	test_get_field();
+	test_set_global();
+	test_create_table();
 }
 
 /*

@@ -186,9 +186,11 @@ static void test_call_lua()
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
 	add_package_path(L, "../Script/?.lua");
+
 	result = luaL_loadfile(L, "../Script/api_test_call_lua.lua");	// [-0, +1, m]
 	assert(result == 0);
 	result = lua_pcall(L, 0, LUA_MULTRET, 0);	// [-(nargs + 1), +(nresults|1), –]
+	assert(result == LUA_OK);
 	lua_getglobal(L, "mymath");
 	lua_pushinteger(L, 30); // 参数x
 	lua_pushinteger(L, 12);	// 参数y
@@ -208,9 +210,12 @@ static void test_call_require()
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
 	add_package_path(L, "../Script/?.lua");
+
 	lua_getglobal(L, "require");
 	lua_pushstring(L, "api_test_call_lua");
 	result = lua_pcall(L, 1, LUA_MULTRET, 0);	// [-(nargs + 1), +(nresults|1), –]
+	assert(result == LUA_OK);
+
 	lua_getglobal(L, "mymath");
 	lua_pushinteger(L, 30); // 参数x
 	lua_pushinteger(L, 12);	// 参数y

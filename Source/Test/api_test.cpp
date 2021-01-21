@@ -195,6 +195,30 @@ static void test_call_lua()
 	lua_pcall(L, 2, LUA_MULTRET, 0);
 	lua_Integer sum = lua_tointeger(L, -2);
 	lua_Integer diff = lua_tointeger(L, -1);
+	assert(sum == 42);
+	assert(diff == 18);
+	lua_pop(L, 2); // 将返回值出栈
+	lua_close(L);
+}
+
+/** 调用require加载lua文件 */
+static void test_call_require()
+{
+	int result;
+	lua_State* L = luaL_newstate();
+	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
+	add_package_path(L, "../Script/?.lua");
+	lua_getglobal(L, "require");
+	lua_pushstring(L, "api_test_call_lua");
+	result = lua_pcall(L, 1, LUA_MULTRET, 0);	// [-(nargs + 1), +(nresults|1), –]
+	lua_getglobal(L, "mymath");
+	lua_pushinteger(L, 30); // 参数x
+	lua_pushinteger(L, 12);	// 参数y
+	lua_pcall(L, 2, LUA_MULTRET, 0);
+	lua_Integer sum = lua_tointeger(L, -2);
+	lua_Integer diff = lua_tointeger(L, -1);
+	assert(sum == 42);
+	assert(diff == 18);
 	lua_pop(L, 2); // 将返回值出栈
 	lua_close(L);
 }
@@ -211,6 +235,7 @@ void api_test_main()
 	test_set_global();
 	test_create_table();
 	test_call_lua();
+	test_call_require();
 }
 
 /*

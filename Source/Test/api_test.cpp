@@ -179,6 +179,26 @@ static void test_create_table()
 	// lua_createtable内部有优化，实际上lua_newtable就是带有默认参数的lua_createtable
 }
 
+/** 调用lua文件中定义的全局函数 */
+static void test_call_lua()
+{
+	int result;
+	lua_State* L = luaL_newstate();
+	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
+	add_package_path(L, "../Script/?.lua");
+	result = luaL_loadfile(L, "../Script/api_test_call_lua.lua");	// [-0, +1, m]
+	assert(result == 0);
+	result = lua_pcall(L, 0, LUA_MULTRET, 0);	// [-(nargs + 1), +(nresults|1), –]
+	lua_getglobal(L, "mymath");
+	lua_pushinteger(L, 30); // 参数x
+	lua_pushinteger(L, 12);	// 参数y
+	lua_pcall(L, 2, LUA_MULTRET, 0);
+	lua_Integer sum = lua_tointeger(L, -2);
+	lua_Integer diff = lua_tointeger(L, -1);
+	lua_pop(L, 2); // 将返回值出栈
+	lua_close(L);
+}
+
 void api_test_main()
 {
 	test_lua_type();
@@ -190,6 +210,7 @@ void api_test_main()
 	test_get_field();
 	test_set_global();
 	test_create_table();
+	test_call_lua();
 }
 
 /*

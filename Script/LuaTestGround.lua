@@ -582,6 +582,21 @@ local function test_str_int_key()
 	assert(t[6] == nil)
 end
 
+local function test_coroutine_hello()
+	local function func()
+		for i=1,10 do
+			print("test_coroutine_hello:"..i)
+			print(coroutine.yield())
+		end
+		table.insert(fff,abf) --为毛不会报错？
+	end
+
+	local co = coroutine.create(func)
+	for i=1,11 do
+		print(coroutine.resume(co, i *10))
+	end
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -623,3 +638,4 @@ test_class()
 test_index()
 test_rec_index()
 test_str_int_key()
+test_coroutine_hello()

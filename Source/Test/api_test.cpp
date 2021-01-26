@@ -228,6 +228,21 @@ static void test_call_require()
 	lua_close(L);
 }
 
+static void test_newmetatable()
+{
+	lua_State* L = luaL_newstate();
+
+	int ret = luaL_newmetatable(L, "ObjectMap");
+	assert(1 == ret);
+	lua_pop(L, 1);
+
+	ret = luaL_newmetatable(L, "ObjectMap");
+	assert(0 == ret);
+	lua_pop(L, 1);
+
+	lua_close(L);
+}
+
 void api_test_main()
 {
 	test_lua_type();
@@ -241,6 +256,7 @@ void api_test_main()
 	test_create_table();
 	test_call_lua();
 	test_call_require();
+	test_newmetatable();
 }
 
 /*

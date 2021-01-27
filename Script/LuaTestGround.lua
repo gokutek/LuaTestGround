@@ -602,6 +602,34 @@ local function test_coroutine_hello()
 	end
 end
 
+--简单的迭代器
+local function test_iter1()
+	local index = 0
+
+	local function myiter(t)
+		local function f()
+			index = index + 1
+			if t[index] then
+				return t[index] * 10
+			else
+				return nil
+			end
+		end
+
+		return f
+	end
+
+	local mt = { 1, 2, 3, 4, 5 }
+	local index = 1
+
+	for i in myiter(mt) do
+		assert(i == mt[index]*10)
+		index = index + 1
+	end
+end
+
+--泛型for
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -644,3 +672,4 @@ test_index()
 test_rec_index()
 test_str_int_key()
 test_coroutine_hello()
+test_iter1()

@@ -583,15 +583,20 @@ local function test_str_int_key()
 end
 
 local function test_coroutine_hello()
-	local function func()
+	local function func(x, y, z)
+		assert(x == 10)
 		for i=1,10 do
 			print("test_coroutine_hello:"..i)
 			print(coroutine.yield())
 		end
+	
 		table.insert(fff,abf) --为毛不会报错？
 	end
 
 	local co = coroutine.create(func)
+
+	print(coroutine.resume(co, 1, 2, 3))
+
 	for i=1,11 do
 		print(coroutine.resume(co, i *10))
 	end

@@ -243,30 +243,6 @@ static void test_newmetatable()
 	lua_close(L);
 }
 
-static int TArray_New(lua_State* L)
-{
-	return 0;
-}
-
-static void test___call()
-{
-	lua_State* L = luaL_newstate();
-	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
-	add_package_path(L, "../Script/?.lua");
-
-	luaL_newmetatable(L, "TArray");
-	lua_pushstring(L, "__call");
-	lua_pushcfunction(L, TArray_New);
-	lua_rawset(L, -3);
-
-	int result = luaL_loadfile(L, "../Script/api_test___call.lua");	// [-0, +1, m]
-	assert(result == 0);
-	result = lua_pcall(L, 0, 0, 0);	// [-(nargs + 1), +(nresults|1), –]
-	assert(result == LUA_OK);
-
-	lua_close(L);
-}
-
 void api_test_main()
 {
 	test_lua_type();
@@ -281,7 +257,6 @@ void api_test_main()
 	test_call_lua();
 	test_call_require();
 	test_newmetatable();
-	test___call();
 }
 
 /*

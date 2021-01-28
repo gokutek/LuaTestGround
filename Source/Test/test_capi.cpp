@@ -145,7 +145,7 @@ static void test_print()
 	lua_State* L = luaL_newstate();
 	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
 	add_package_path(L, "../Script/?.lua");
-	result = luaL_loadfile(L, "../Script/api_test_loadfile.lua");
+	result = luaL_loadfile(L, "../Script/test_capi_loadfile.lua");
 	assert(result == 0);
 	lua_pcall(L, 0, LUA_MULTRET, 0);
  	lua_close(L);
@@ -187,7 +187,7 @@ static void test_call_lua()
 	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
 	add_package_path(L, "../Script/?.lua");
 
-	result = luaL_loadfile(L, "../Script/api_test_call_lua.lua");	// [-0, +1, m]
+	result = luaL_loadfile(L, "../Script/test_capi_call_lua.lua");	// [-0, +1, m]
 	assert(result == 0);
 	result = lua_pcall(L, 0, LUA_MULTRET, 0);	// [-(nargs + 1), +(nresults|1), –]
 	assert(result == LUA_OK);
@@ -212,7 +212,7 @@ static void test_call_require()
 	add_package_path(L, "../Script/?.lua");
 
 	lua_getglobal(L, "require");
-	lua_pushstring(L, "api_test_call_lua");
+	lua_pushstring(L, "test_capi_call_lua");
 	result = lua_pcall(L, 1, LUA_MULTRET, 0);	// [-(nargs + 1), +(nresults|1), –]
 	assert(result == LUA_OK);
 
@@ -243,6 +243,25 @@ static void test_newmetatable()
 	lua_close(L);
 }
 
+//测试：在C中写_G，在Lua中读取
+static void test_global_c_lua()
+{
+	int result;
+	lua_State* L = luaL_newstate();
+	luaL_openlibs(L); // 不打开标准库的话，print都调用不了
+	add_package_path(L, "../Script/?.lua");
+
+	lua_pushinteger(L, 123321);
+	lua_setglobal(L, "TArray");
+
+	result = luaL_loadfile(L, "../Script/test_capi_global_c_lua.lua");	// [-0, +1, m]
+	assert(result == 0);
+	result = lua_pcall(L, 0, LUA_MULTRET, 0);	// [-(nargs + 1), +(nresults|1), –]
+	assert(result == LUA_OK);
+
+	lua_close(L);
+}
+
 void api_test_main()
 {
 	test_lua_type();
@@ -257,6 +276,7 @@ void api_test_main()
 	test_call_lua();
 	test_call_require();
 	test_newmetatable();
+	test_global_c_lua();
 }
 
 /*

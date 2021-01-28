@@ -19,7 +19,7 @@ static void AddPackagePath(lua_State* L, const char* Path)
 {
 	lua_getglobal(L, "package");
 	lua_getfield(L, -1, "path");
-	char FinalPath[MAX_PATH];
+	char FinalPath[1024];
 	sprintf_s(FinalPath, "%s;%s", lua_tostring(L, -1), Path);
 	lua_pushstring(L, FinalPath);
 	lua_setfield(L, -3, "path");

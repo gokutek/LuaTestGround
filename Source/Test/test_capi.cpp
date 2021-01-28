@@ -293,9 +293,12 @@ static int error_func(lua_State* L)
 static void test_pcall()
 {
 	lua_State* L = luaL_newstate();
+	int top = lua_gettop(L);
 	lua_pushcfunction(L, error_func);
 	luaL_loadfile(L, "../Script/test_capi_pcall.lua");	// [-0, +1, m]
+	top = lua_gettop(L);
 	lua_pcall(L, 0, LUA_MULTRET, -2);
+	top = lua_gettop(L);
 	lua_close(L);
 }
 

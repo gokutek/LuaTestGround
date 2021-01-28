@@ -3,7 +3,35 @@
 #include <string.h>
 #include <stdint.h>
 #include <windows.h>
+#include <iostream>
 #include "lua.hpp"
+
+static int ReportLuaCallError(lua_State* L)
+{
+	int Type = lua_type(L, -1);
+	if (Type == LUA_TSTRING)
+	{
+		const char* ErrorString = lua_tostring(L, -1);
+		luaL_traceback(L, L, ErrorString, 1);
+		ErrorString = lua_tostring(L, -1);
+		std::cerr << "Lua error message: " << ErrorString << std::endl;
+	}
+	else if (Type == LUA_TTABLE)
+	{
+		// multiple errors is possible
+		int MessageIndex = 0;
+		lua_pushnil(L);
+		while (lua_next(L, -2) != 0)
+		{
+			const char* ErrorString = lua_tostring(L, -1);
+			std::cerr << "Lua error message: " << MessageIndex++ << " : " << ErrorString << std::endl;
+			lua_pop(L, 1);
+		}
+	}
+
+	lua_pop(L, 1);
+	return 0;
+}
 
 /**
  * Create weak value table
@@ -134,7 +162,10 @@ static void FLuaContext_CreateState()
 
 	int result = luaL_loadfile(L, "../Script/test_unlua.lua");	// [-0, +1, m]
 	assert(result == 0);
-	result = lua_pcall(L, 0, LUA_MULTRET, 0);	// [-(nargs + 1), +(nresults|1), ¨C]
+	int base = lua_gettop(L);
+	lua_pushcfunction(L, ReportLuaCallError);
+	lua_insert(L, base);
+	result = lua_pcall(L, 0, LUA_MULTRET, base);	// [-(nargs + 1), +(nresults|1), ¨C]
 	assert(result == LUA_OK);
 
 	lua_close(L);

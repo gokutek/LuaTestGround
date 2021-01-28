@@ -7,6 +7,7 @@
 #include "lua.hpp"
 
 extern void api_test_main();
+extern void test_unlua_main();
 
 static int pmain(lua_State *L)
 {
@@ -24,6 +25,7 @@ int main(int argc, char** argv)
 	SetCurrentDirectoryW(szWorkDir);
 
 	api_test_main();
+	test_unlua_main();
 
 	lua_State *L = luaL_newstate();
 	lua_pushcfunction(L, &pmain);  /* to call 'pmain' in protected mode */

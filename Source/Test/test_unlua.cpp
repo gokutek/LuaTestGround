@@ -62,6 +62,9 @@ static int TArray_Length(lua_State* L)
 
 static int TArray_Delete(lua_State* L)
 {
+	std::vector<int64_t>* vec = (std::vector<int64_t>*)lua_touserdata(L, -1);
+	typedef std::vector<int64_t> x;
+	vec->~x();
 	return 0;
 }
 
@@ -133,6 +136,8 @@ static void FLuaContext_CreateState()
 	assert(result == 0);
 	result = lua_pcall(L, 0, LUA_MULTRET, 0);	// [-(nargs + 1), +(nresults|1), ¨C]
 	assert(result == LUA_OK);
+
+	lua_close(L);
 }
 
 void test_unlua_main()

@@ -604,9 +604,9 @@ end
 
 --简单的迭代器
 local function test_iter1()
-	local index = 0
-
+	--迭代器
 	local function myiter(t)
+		local index = 0
 		local function f()
 			index = index + 1
 			if t[index] then
@@ -620,15 +620,29 @@ local function test_iter1()
 	end
 
 	local mt = { 1, 2, 3, 4, 5 }
-	local index = 1
+	local chkindex = 1
 
 	for i in myiter(mt) do
-		assert(i == mt[index]*10)
-		index = index + 1
+		assert(i == mt[chkindex]*10)
+		chkindex = chkindex + 1
 	end
 end
 
 --泛型for
+
+-- __call元方法
+local function test___call()
+	local TArray = {}
+	TArray.__call = function(f, x, y, z)
+		assert(x == 1)
+		assert(y == 2)
+		assert(z == 3)
+	end
+
+	setmetatable(TArray, TArray)
+
+	TArray(1,2,3)
+end
 
 test_table_del_element()
 test_table_float_key()
@@ -673,3 +687,4 @@ test_rec_index()
 test_str_int_key()
 test_coroutine_hello()
 test_iter1()
+test___call()

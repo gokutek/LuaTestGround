@@ -644,6 +644,8 @@ local function test___call()
 	TArray(1,2,3)
 end
 
+package.path = package.path .. ";../Script/?.lua"
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()

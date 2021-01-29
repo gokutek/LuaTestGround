@@ -271,35 +271,84 @@ static int error_func(lua_State* L)
 		const char* ErrorString = lua_tostring(L, -1);
 		luaL_traceback(L, L, ErrorString, 1);
 		ErrorString = lua_tostring(L, -1);
-		std::cerr << "Lua error message: " << ErrorString << std::endl;
+		ErrorString;
 	}
 	else if (Type == LUA_TTABLE)
 	{
 		// multiple errors is possible
-		int MessageIndex = 0;
 		lua_pushnil(L);
 		while (lua_next(L, -2) != 0)
 		{
 			const char* ErrorString = lua_tostring(L, -1);
-			std::cerr << "Lua error message: " << MessageIndex++ << " : " << ErrorString << std::endl;
+			ErrorString;
 			lua_pop(L, 1);
 		}
 	}
 
 	lua_pop(L, 1);
+
+#if 1
+	lua_pushinteger(L, 58661244);
+	return 1;
+#else
+	// 若这里不push，等价于pushnil
 	return 0;
+#endif
 }
 
-static void test_pcall()
+static void test_pcall_ok()
 {
 	lua_State* L = luaL_newstate();
-	int top = lua_gettop(L);
 	lua_pushcfunction(L, error_func);
-	luaL_loadfile(L, "../Script/test_capi_pcall.lua");	// [-0, +1, m]
-	top = lua_gettop(L);
-	lua_pcall(L, 0, LUA_MULTRET, -2);
-	top = lua_gettop(L);
+	luaL_loadfile(L, "../Script/test_capi_pcall_ok.lua");	// [-0, +1, m]
+	if (LUA_OK != lua_pcall(L, 0, LUA_MULTRET, 1))
+	{
+		lua_pop(L, 1);
+	}
+
+	int type = lua_getglobal(L, "test_pcall");
+	assert(type == LUA_TFUNCTION);
+
+	if (LUA_OK != lua_pcall(L, 0, LUA_MULTRET, 1))
+	{
+		lua_pop(L, 1);
+	}
+
+	lua_Integer value = lua_tointeger(L, -1);
+	assert(value == 12345);
+	lua_pop(L, 1); // 弹出 返回值
+
+	lua_pop(L, 1); // 弹出 error_func
+	
+	assert(0 == lua_gettop(L));
+
 	lua_close(L);
+}
+
+static void test_pcall_err()
+{
+	lua_State* L = luaL_newstate();
+	lua_pushcfunction(L, error_func);
+	luaL_loadfile(L, "../Script/test_capi_pcall_err.lua");	// [-0, +1, m]
+	if (LUA_OK != lua_pcall(L, 0, LUA_MULTRET, 1))
+	{
+		lua_pop(L, 1);
+	}
+
+	int type = lua_getglobal(L, "test_pcall");
+	assert(type == LUA_TFUNCTION);
+
+	if (LUA_OK != lua_pcall(L, 0, LUA_MULTRET, 1))
+	{
+		assert(58661244 == lua_tointeger(L, -1));
+		lua_pop(L, 1);
+	}
+
+	lua_pop(L, 1); // 弹出 error_func
+
+	assert(0 == lua_gettop(L));
+
+ 	lua_close(L);
 }
 
 void api_test_main()
@@ -317,7 +366,8 @@ void api_test_main()
 	test_call_require();
 	test_newmetatable();
 	test_global_c_lua();
-	test_pcall();
+	test_pcall_ok();
+	test_pcall_err();
 }
 
 /*

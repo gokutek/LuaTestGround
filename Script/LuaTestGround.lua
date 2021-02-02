@@ -629,6 +629,24 @@ local function test_iter1()
 end
 
 --泛型for
+local function test_iter2()
+	--迭代器
+	local function fac(t)
+		local function f(state, cv)
+			cv = cv + 1
+			return t[cv]
+		end
+		return f,{},0
+	end
+
+	local mt = { 1, 2, 3, 4, 5 }
+	local chkindex = 1
+
+	for i in fac(mt) do
+		assert(i == mt[chkindex])
+		chkindex = chkindex + 1
+	end
+end
 
 -- __call元方法
 local function test___call()
@@ -689,4 +707,5 @@ test_rec_index()
 test_str_int_key()
 test_coroutine_hello()
 test_iter1()
+test_iter2()
 test___call()

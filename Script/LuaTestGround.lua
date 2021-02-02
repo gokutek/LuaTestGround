@@ -648,6 +648,16 @@ local function test_iter2()
 	end
 end
 
+local function test_cl()
+	local function f(cv)
+		cv = cv + 1
+	end
+
+	local cv = 10
+	f(cv) -- 值传递
+	assert(cv == 10)
+end
+
 -- __call元方法
 local function test___call()
 	local TArray = {}
@@ -709,3 +719,4 @@ test_coroutine_hello()
 test_iter1()
 test_iter2()
 test___call()
+test_cl()

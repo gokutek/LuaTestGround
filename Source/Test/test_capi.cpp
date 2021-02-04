@@ -351,6 +351,43 @@ static void test_pcall_err()
  	lua_close(L);
 }
 
+static int closure001(lua_State* L)
+{
+	lua_Integer x = lua_tointeger(L, lua_upvalueindex(1));
+	lua_Integer y = lua_tointeger(L, lua_upvalueindex(2));
+	lua_Integer z = lua_tointeger(L, lua_upvalueindex(3));
+	assert(x == 10);
+	assert(y == 20);
+	assert(z == 30);
+	return 0;
+}
+
+static void test_pushcclosure()
+{
+	lua_State* L = luaL_newstate();
+	luaL_openlibs(L);
+	add_package_path(L, "../Script/?.lua");
+
+	lua_pushinteger(L, 10);
+	lua_pushinteger(L, 20);
+	lua_pushinteger(L, 30);
+	lua_pushcclosure(L, closure001, 3);
+	lua_setglobal(L, "test_closure");
+	assert(lua_gettop(L) == 0);
+
+	luaL_loadfile(L, "../Script/test_capi_closure.lua");	// [-0, +1, m]
+	if (LUA_OK != lua_pcall(L, 0, LUA_MULTRET, 1))
+	{
+		lua_pop(L, 1);
+	}
+
+	int type = lua_getglobal(L, "main");
+	assert(type == LUA_TFUNCTION);
+	lua_pcall(L, 0, LUA_MULTRET, 0);
+
+	lua_close(L);
+}
+
 void api_test_main()
 {
 	test_lua_type();
@@ -368,6 +405,7 @@ void api_test_main()
 	test_global_c_lua();
 	test_pcall_ok();
 	test_pcall_err();
+	test_pushcclosure();
 }
 
 /*

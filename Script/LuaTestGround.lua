@@ -14,6 +14,14 @@ local function is_table_sorted(t)
 	return true
 end
 
+local function table_len(t)
+	local len = 0
+	for k,v in pairs(t) do
+		len = len + 1
+	end
+	return len
+end
+
 --测试内容：删除表元素（这里测试删除最后一个元素仅仅是为了避免`#`语义的问题）
 local function test_table_del_element()
 	local t = { 1, 2, 3, 4, 5 }
@@ -705,6 +713,28 @@ local function test___call()
 	TArray(1,2,3)
 end
 
+local function test_weaktable()
+	a = {}
+	setmetatable(a, {__mode="k"})
+
+	k = {}
+	a[k] = 1
+
+	k= {}
+	a[k] = 2
+
+	assert(table_len(a) == 2)
+
+	--强制进行垃圾回收
+	collectgarbage()
+
+	for k,v in pairs(a) do
+		print(v)
+	end
+
+	assert(table_len(a) == 1)
+end
+
 
 test_table_del_element()
 test_table_float_key()
@@ -753,3 +783,4 @@ test_iter1()
 test_iter2()
 test___call()
 test_cl()
+test_weaktable()

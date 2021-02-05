@@ -713,7 +713,7 @@ local function test___call()
 	TArray(1,2,3)
 end
 
-local function test_weaktable()
+local function test_weaktable_k()
 	a = {}
 	setmetatable(a, {__mode="k"})
 
@@ -728,13 +728,23 @@ local function test_weaktable()
 	--强制进行垃圾回收
 	collectgarbage()
 
-	for k,v in pairs(a) do
-		print(v)
-	end
-
 	assert(table_len(a) == 1)
 end
 
+local function test_weaktable_v()
+	a = {}
+	setmetatable(a, {__mode="v"})
+
+	a[1] = {}
+	a[2] = {}
+
+	assert(table_len(a) == 2)
+
+	--强制进行垃圾回收
+	collectgarbage()
+
+	assert(table_len(a) == 0)
+end
 
 test_table_del_element()
 test_table_float_key()
@@ -783,4 +793,5 @@ test_iter1()
 test_iter2()
 test___call()
 test_cl()
-test_weaktable()
+test_weaktable_k()
+test_weaktable_v()

@@ -602,6 +602,36 @@ local function test_coroutine_hello()
 	end
 end
 
+local function test_coroutine_iter1()
+	local function iter(arr)
+		--协程函数
+		local function cf(arr_)
+			for i=1,#arr_ do
+				coroutine.yield(arr_[i])
+			end
+		end
+
+		--创建协程
+		local co = coroutine.create(cf)
+
+		local function iterfunc()
+			--每次迭代只需要resume协程
+			local ok, v = coroutine.resume(co, arr)
+			assert(ok)
+			return v
+		end
+
+		return iterfunc
+	end
+
+	local t = {10,20,30}
+	local index = 1
+	for i in iter(t) do
+		assert(i == t[index])
+		index = index + 1
+	end
+end
+
 --简单的迭代器
 local function test_iter1()
 	--迭代器
@@ -716,6 +746,7 @@ test_index()
 test_rec_index()
 test_str_int_key()
 test_coroutine_hello()
+test_coroutine_iter1()
 test_iter1()
 test_iter2()
 test___call()

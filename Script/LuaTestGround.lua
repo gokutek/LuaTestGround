@@ -2,6 +2,8 @@
     测试Lua语言本身的特性
 --]]
 
+package.path = package.path .. ";../Script/?.lua"
+
 --判断数组是否已排序（升序）
 local function is_table_sorted(t)
 	for i=2,#t do
@@ -602,6 +604,7 @@ local function test_coroutine_hello()
 	end
 end
 
+--协程的方式实现迭代器
 local function test_coroutine_iter1()
 	local function iter(arr)
 		--协程函数
@@ -702,7 +705,6 @@ local function test___call()
 	TArray(1,2,3)
 end
 
-package.path = package.path .. ";../Script/?.lua"
 
 test_table_del_element()
 test_table_float_key()

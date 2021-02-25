@@ -2,6 +2,8 @@
     测试Lua语言本身的特性
 --]]
 
+package.path = package.path .. ";../Script/?.lua"
+
 --判断数组是否已排序（升序）
 local function is_table_sorted(t)
 	for i=2,#t do
@@ -10,6 +12,14 @@ local function is_table_sorted(t)
 		end
 	end
 	return true
+end
+
+local function table_len(t)
+	local len = 0
+	for k,v in pairs(t) do
+		len = len + 1
+	end
+	return len
 end
 
 --测试内容：删除表元素（这里测试删除最后一个元素仅仅是为了避免`#`语义的问题）
@@ -602,6 +612,37 @@ local function test_coroutine_hello()
 	end
 end
 
+--协程的方式实现迭代器
+local function test_coroutine_iter1()
+	local function iter(arr)
+		--协程函数
+		local function cf(arr_)
+			for i=1,#arr_ do
+				coroutine.yield(arr_[i])
+			end
+		end
+
+		--创建协程
+		local co = coroutine.create(cf)
+
+		local function iterfunc()
+			--每次迭代只需要resume协程
+			local ok, v = coroutine.resume(co, arr)
+			assert(ok)
+			return v
+		end
+
+		return iterfunc
+	end
+
+	local t = {10,20,30}
+	local index = 1
+	for i in iter(t) do
+		assert(i == t[index])
+		index = index + 1
+	end
+end
+
 --简单的迭代器
 local function test_iter1()
 	--迭代器
@@ -679,7 +720,38 @@ local function test_int_str_key()
 	assert(t["123456"]  == nil)
 end
 
-package.path = package.path .. ";../Script/?.lua"
+local function test_weaktable_k()
+	a = {}
+	setmetatable(a, {__mode="k"})
+
+	k = {}
+	a[k] = 1
+
+	k= {}
+	a[k] = 2
+
+	assert(table_len(a) == 2)
+
+	--强制进行垃圾回收
+	collectgarbage()
+
+	assert(table_len(a) == 1)
+end
+
+local function test_weaktable_v()
+	a = {}
+	setmetatable(a, {__mode="v"})
+
+	a[1] = {}
+	a[2] = {}
+
+	assert(table_len(a) == 2)
+
+	--强制进行垃圾回收
+	collectgarbage()
+
+	assert(table_len(a) == 0)
+end
 
 test_table_del_element()
 test_table_float_key()
@@ -723,8 +795,10 @@ test_index()
 test_rec_index()
 test_str_int_key()
 test_coroutine_hello()
+test_coroutine_iter1()
 test_iter1()
 test_iter2()
 test___call()
 test_cl()
 test_int_str_key()
+test_weaktable_k()

@@ -672,6 +672,13 @@ local function test___call()
 	TArray(1,2,3)
 end
 
+local function test_int_str_key()
+	local t = {}
+	t[123456] = 100
+	assert(t[123456]  == 100)
+	assert(t["123456"]  == nil)
+end
+
 package.path = package.path .. ";../Script/?.lua"
 
 test_table_del_element()
@@ -720,3 +727,4 @@ test_iter1()
 test_iter2()
 test___call()
 test_cl()
+test_int_str_key()

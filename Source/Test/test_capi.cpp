@@ -368,6 +368,7 @@ static void test_pushcclosure()
 	luaL_openlibs(L);
 	add_package_path(L, "../Script/?.lua");
 
+	// ÏÈpush3¸öupvalue
 	lua_pushinteger(L, 10);
 	lua_pushinteger(L, 20);
 	lua_pushinteger(L, 30);

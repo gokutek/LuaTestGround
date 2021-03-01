@@ -496,6 +496,28 @@ local function test_pairs_order()
 	assert(is_table_sorted(keys))
 end
 
+--测试：table排序
+local function test_table_sort2()
+	local array = {
+		{ ZOrder=0, 	name="btn1", },
+		{ ZOrder=100,	name="btn2", },
+		{ ZOrder=0, 	name="btn3", },
+		{ ZOrder=2, 	name="btn4", },
+		{ ZOrder=1, 	name="btn5", },
+		{ ZOrder=0, 	name="btn6", },
+	}
+
+	table.sort(array, function(a, b)
+			-- print("--cmp:"..a.name..","..b.name)
+			return a.ZOrder < b.ZOrder 
+		end)
+
+	--相同的ZOrder排序后仍然保留它们排序前的顺序
+	assert(array[1].name == "btn1")
+	assert(array[2].name == "btn3")
+	assert(array[3].name == "btn6")
+end
+
 --测试：_ENV
 local function test_ENV()
 	-- _ENV = nil
@@ -808,3 +830,4 @@ test_cl()
 test_int_str_key()
 test_weaktable_k()
 test_string_find()
+test_table_sort2()

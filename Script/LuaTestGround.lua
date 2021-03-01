@@ -753,6 +753,11 @@ local function test_weaktable_v()
 	assert(table_len(a) == 0)
 end
 
+local function test_string_find()
+	local str = "金属地基"
+	assert(string.find(str, "哈哈") == nil)
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -802,3 +807,4 @@ test___call()
 test_cl()
 test_int_str_key()
 test_weaktable_k()
+test_string_find()

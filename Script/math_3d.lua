@@ -286,7 +286,6 @@ function quat:difference(q)
 end
 
 -------------------------------------------------------------------------------
----vector3单元测试
 local function vector3_test()
 	local vec = vector3.new()
 	vec.x = 10
@@ -295,9 +294,25 @@ local function vector3_test()
 	print(vec:length())
 end
 
+local function vector4_test()
+end
+
+local function matrix4x4_test()
+end
+
+local function euler_test()
+end
+
+local function quat_test()
+end
+
 ---单元测试
 local function math_3d_test()
 	vector3_test()
+	vector4_test()
+	matrix4x4_test()
+	euler_test()
+	quat_test()
 end
 
 math_3d_test()

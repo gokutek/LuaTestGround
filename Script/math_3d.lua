@@ -111,6 +111,38 @@ local function vector3_test()
 	print(vec:length())
 end
 
+---向量x矩阵
+function vector4:transform(m)
+	--TODO:
+end
+
+---构造一个4x4矩阵
+---@return matrix4x4单位矩阵
+function matrix4x4.new()
+	local m = {}
+	m._11 = 1; m._12 = 0; m._13 = 0; m._14 = 0
+	m._21 = 0; m._22 = 1; m._23 = 0; m._24 = 0
+	m._31 = 0; m._32 = 0; m._33 = 1; m._34 = 0
+	m._41 = 0; m._42 = 0; m._43 = 0; m._44 = 1
+	setmetatable(m, {__index=matrix4x4})
+	return m
+end
+
+---矩阵求逆
+function matrix4x4:inverse()
+	--TODO:
+end
+
+---矩阵的行列式
+function matrix4x4:det()
+	--TODO:
+end
+
+---矩阵x矩阵
+function matrix4x4:mul()
+	--TODO:
+end
+
 ---构造单位四元数
 ---@return 单位四元数
 function quat.new()

@@ -128,22 +128,45 @@ function quat.from_n_theta(n, theta)
 end
 
 ---四元数插值
+---@return quat
 function quat.slerp(q1, q2, t)
 end
 
+---四元数的`差`
+---@return quat
+function quat:difference(q)
+	--TODO:
+end
+
+---四元数对数
+---@return quat
+function quat:log()
+	--TODO:
+end
+
 ---四元数指数
+---@return quat
+function quat:exp()
+	--TODO:
+end
 
 ---四元数求幂
 
----四元数叉乘
+---四元数x四元数
+---@param q quat
+---@return quat
 function quat:cross(q)
 end
 
----四元数点乘
+---四元数·四元数
+---@param q quat
+---@return number
 function quat:dot(q)
+	return self.w*q.w + self.x*q.x + self.y*q.y + self.z*q.z
 end
 
 ---四元数求逆
+---@return quat
 function quat:inverse(q)
 end
 

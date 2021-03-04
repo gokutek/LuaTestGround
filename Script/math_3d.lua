@@ -102,15 +102,7 @@ function vector3:mul(scalar)
 	return result
 end
 
----vector3单元测试
-local function vector3_test()
-	local vec = vector3.new()
-	vec.x = 10
-	vec.y = 2
-	vec.z = 5
-	print(vec:length())
-end
-
+-------------------------------------------------------------------------------
 ---构造vector4
 ---@return vector4
 function vector4.new()
@@ -126,6 +118,7 @@ function vector4:transform(m)
 	--TODO:
 end
 
+-------------------------------------------------------------------------------
 ---构造一个4x4矩阵
 ---@return matrix4x4单位矩阵
 function matrix4x4.new()
@@ -155,39 +148,49 @@ end
 
 ---平移变换矩阵
 ---@return matrix4x4
-function matrix4x4:translate()
+function matrix4x4:translate(x, y, z)
 	--TODO:
 end
 
 ---缩放变换矩阵
 ---@return matrix4x4
-function matrix4x4:scale()
+function matrix4x4:scale(x, y, z)
 	--TODO:
 end
 
 ---绕X轴的旋转变换矩阵
 ---@return matrix4x4
-function matrix4x4:rotateX()
+function matrix4x4:rotateX(theta)
 	--TODO:
 end
 
 ---绕Y轴的旋转变换矩阵
 ---@return matrix4x4
-function matrix4x4:rotateY()
+function matrix4x4:rotateY(theta)
 	--TODO:
 end
 
 ---绕Z轴的旋转变换矩阵
 ---@return matrix4x4
-function matrix4x4:rotateZ()
+function matrix4x4:rotateZ(theta)
 	--TODO:
 end
 
 ---绕任意轴的旋转变换矩阵
-function matrix4x4:rotateAxis()
+function matrix4x4:rotateAxis(n, theta)
 	--TODO:
 end
 
+-------------------------------------------------------------------------------
+---构造欧拉角
+---@return euler
+function euler.new(pitch, yaw, roll)
+	local rotator = {pitch=pitch,yaw=yaw,roll=roll}
+	setmetatable(rotator, {__index=euler})
+	return rotator
+end
+
+-------------------------------------------------------------------------------
 ---构造单位四元数
 ---@return 单位四元数
 function quat.new()
@@ -196,23 +199,27 @@ function quat.new()
 	return q
 end
 
+function quat.makeFromEuler()
+end
+
+function quat.makeFromMatrix4x4()
+end
+
 ---根据旋转轴、旋转角度构造四元数
----@param n vector3
----@param theta number
-function quat.from_n_theta(n, theta)
+---@param axis vector3 单位向量
+---@param angleRad number 弧度
+function quat.makeFromAxisAndAngle(axis, angleRad)
 	local q = quat.new()
+	q.w = math.cos(angleRad/2)
+	q.x = math.sin(angleRad/2) * axis.x
+	q.y = math.sin(angleRad/2) * axis.y
+	q.z = math.sin(angleRad/2) * axis.z
 	return q
 end
 
 ---四元数插值
 ---@return quat
 function quat.slerp(q1, q2, t)
-end
-
----四元数的`差`
----@return quat
-function quat:difference(q)
-	--TODO:
 end
 
 ---四元数对数
@@ -242,9 +249,50 @@ function quat:dot(q)
 	return self.w*q.w + self.x*q.x + self.y*q.y + self.z*q.z
 end
 
+---四元数的模
+---@return number
+function quat:size()
+	return math.sqrt(self.w*self.w + self.x*self.x + self.y*self.y + self.z*self.z)
+end
+
+---四元数的共轭
+---@return quat
+function quat:conjugate()
+	local result = quat.new()
+	result.w = self.w
+	result.x = -self.x
+	result.y = -self.y
+	result.z = -self.z
+	return result
+end
+
 ---四元数求逆
 ---@return quat
-function quat:inverse(q)
+function quat:inverse()
+	local result = self:conjugate()
+	local sz = self:size()
+	result.w = result.w/sz
+	result.x = result.x/sz
+	result.y = result.y/sz
+	result.z = result.z/sz
+	return result
+end
+
+---四元数的`差`
+---@param q quat 目标四元数
+---@return quat
+function quat:difference(q)
+	--TODO:
+end
+
+-------------------------------------------------------------------------------
+---vector3单元测试
+local function vector3_test()
+	local vec = vector3.new()
+	vec.x = 10
+	vec.y = 2
+	vec.z = 5
+	print(vec:length())
 end
 
 ---单元测试

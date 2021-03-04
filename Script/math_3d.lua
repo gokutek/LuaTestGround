@@ -111,7 +111,17 @@ local function vector3_test()
 	print(vec:length())
 end
 
+---构造vector4
+---@return vector4
+function vector4.new()
+	local vec = {x=0,y=0,z=0,w=0}
+	setmetatable(vec, {__index=vector4})
+	return vec
+end
+
 ---向量x矩阵
+---@param m matrix4x4
+---@return vector4
 function vector4:transform(m)
 	--TODO:
 end
@@ -140,6 +150,41 @@ end
 
 ---矩阵x矩阵
 function matrix4x4:mul()
+	--TODO:
+end
+
+---平移变换矩阵
+---@return matrix4x4
+function matrix4x4:translate()
+	--TODO:
+end
+
+---缩放变换矩阵
+---@return matrix4x4
+function matrix4x4:scale()
+	--TODO:
+end
+
+---绕X轴的旋转变换矩阵
+---@return matrix4x4
+function matrix4x4:rotateX()
+	--TODO:
+end
+
+---绕Y轴的旋转变换矩阵
+---@return matrix4x4
+function matrix4x4:rotateY()
+	--TODO:
+end
+
+---绕Z轴的旋转变换矩阵
+---@return matrix4x4
+function matrix4x4:rotateZ()
+	--TODO:
+end
+
+---绕任意轴的旋转变换矩阵
+function matrix4x4:rotateAxis()
 	--TODO:
 end
 

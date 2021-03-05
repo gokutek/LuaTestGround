@@ -131,6 +131,19 @@ function matrix4x4.new()
 	return m
 end
 
+function matrix4x4.identity()
+	return matrix4x4.new()
+end
+
+---是否是单位矩阵
+---@return boolean
+function matrix4x4:isIdentity()
+	return self._11 == 1 and self._12 == 0 and self._13 == 0 and self._14 == 0
+			and self._21 == 0 and self._22 == 1 and self._23 == 0 and self._24 == 0
+			and self._31 == 0 and self._32 == 0 and self._33 == 1 and self._34 == 0
+			and self._41 == 0 and self._42 == 0 and self._43 == 0 and self._44 == 1
+end
+
 ---矩阵求逆
 function matrix4x4:inverse()
 	--TODO:
@@ -199,15 +212,10 @@ function quat.new()
 	return q
 end
 
-function quat.makeFromEuler()
-end
-
-function quat.makeFromMatrix4x4()
-end
-
 ---根据旋转轴、旋转角度构造四元数
 ---@param axis vector3 单位向量
 ---@param angleRad number 弧度
+---@return quat
 function quat.makeFromAxisAndAngle(axis, angleRad)
 	local q = quat.new()
 	q.w = math.cos(angleRad/2)
@@ -217,9 +225,36 @@ function quat.makeFromAxisAndAngle(axis, angleRad)
 	return q
 end
 
+---欧拉角转四元数
+---@param rotator euler
+---@return quat
+function quat.makeFromEuler(rotator)
+	--TODO:
+end
+
+---矩阵转四元数
+---@param matrix matrix4x4
+---@return quat
+function quat.makeFromMatrix4x4(matrix)
+	--TODO:
+end
+
+---四元数转欧拉角
+---@return euler
+function quat:toEuler()
+	--TODO:
+end
+
+---四元数转矩阵
+---@return matrix4x4
+function quat:toMatrix4x4()
+	--TODO:
+end
+
 ---四元数插值
 ---@return quat
 function quat.slerp(q1, q2, t)
+	--TODO:
 end
 
 ---四元数对数
@@ -234,7 +269,10 @@ function quat:exp()
 	--TODO:
 end
 
----四元数求幂
+---四元数幂运算
+function quat:pow(t)
+	--TODO:
+end
 
 ---四元数x四元数
 ---@param q quat

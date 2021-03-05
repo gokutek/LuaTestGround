@@ -112,9 +112,9 @@ function vector4.new()
 end
 
 ---向量x矩阵
----@param m matrix4x4
+---@param matrix matrix4x4
 ---@return vector4
-function vector4:transform(m)
+function vector4:transform(matrix)
 	--TODO:
 end
 

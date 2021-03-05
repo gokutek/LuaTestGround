@@ -21,32 +21,32 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{289d7d96-04e1-4f48-bf41-ddf4f698bbab}</ProjectGuid>
-    <RootNamespace>lua</RootNamespace>
+    <ProjectGuid>{35c9ed37-eb2b-466d-a30c-87eb19444191}</ProjectGuid>
+    <RootNamespace>linterpreter</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -90,7 +90,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;LUA_BUILD_AS_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -104,7 +104,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;LUA_BUILD_AS_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -118,7 +118,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;LUA_BUILD_AS_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -132,7 +132,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;LUA_BUILD_AS_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -143,70 +143,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lapi.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lauxlib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lbaselib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lbitlib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lcode.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lcorolib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lctype.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\ldblib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\ldebug.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\ldo.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\ldump.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lfunc.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lgc.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\linit.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\liolib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\llex.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lmathlib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lmem.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\loadlib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lobject.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lopcodes.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\loslib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lparser.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lstate.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lstring.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lstrlib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\ltable.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\ltablib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\ltm.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lundump.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lutf8lib.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lvm.c" />
-    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lzio.c" />
+    <ClCompile Include="..\..\..\ThirdParty\lua-5.3.5\src\lua.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lapi.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lauxlib.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lcode.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lctype.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\ldebug.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\ldo.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lfunc.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lgc.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\llex.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\llimits.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lmem.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lobject.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lopcodes.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lparser.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lprefix.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lstate.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lstring.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\ltable.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\ltm.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lua.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lua.hpp" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\luaconf.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lualib.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lundump.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lvm.h" />
-    <ClInclude Include="..\..\..\ThirdParty\lua-5.3.5\src\lzio.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\ThirdParty\lua-5.3.5\src\Makefile" />
+    <ProjectReference Include="..\lua\lua.vcxproj">
+      <Project>{289d7d96-04e1-4f48-bf41-ddf4f698bbab}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

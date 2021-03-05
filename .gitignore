@@ -1,9 +1,11 @@
 .vs
 *.obj
+*.iobj
 *.log
 *.tlog
 *.idb
 *.pdb
+*.ipdb
 *.ilk
 *.exe
 *.dll

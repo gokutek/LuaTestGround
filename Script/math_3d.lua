@@ -5,10 +5,13 @@ local euler = {}
 local quat = {}
 
 ---构造vector3
-function vector3.new()
-	local vec3 = {x=0,y=0,z=0}
-	setmetatable(vec3, {__index=vector3})
-	return vec3
+function vector3.new(x, y, z)
+	local vec = {}
+	vec.x = x or 0
+	vec.y = y or 0
+	vec.z = z or 0
+	setmetatable(vec, {__index=vector3})
+	return vec
 end
 
 ---返回零向量
@@ -65,7 +68,9 @@ end
 ---@return vector3
 function vector3:cross(vec)
 	local result = vector3.new()
-	--TODO:
+	result.x = self.y*vec.z - vec.y*self.z
+	result.y = self.z*vec.x - vec.z*self.x
+	result.z = self.x*vec.y - vec.x*self.y
 	return result
 end
 
@@ -100,6 +105,13 @@ function vector3:mul(scalar)
 	result.y = self.y * scalar
 	result.z = self.z * scalar
 	return result
+end
+
+---求向量在另一个向量上的投影
+---@param vec vector3
+---@return vector3
+function vector3:projection(vec)
+	--TODO:
 end
 
 -------------------------------------------------------------------------------
@@ -325,6 +337,16 @@ end
 
 -------------------------------------------------------------------------------
 local function vector3_test()
+	local vec1 = vector3.new(1, 2, 3)
+	local vec2 = vector3.new(4, 5, 6)
+	local result = vec1:dot(vec2)
+	assert(result == 1*4+2*5+3*6)
+	assert(result == 32)
+
+	--向量与自身的点积，结果也等于自己模的平方
+	assert(vec1:dot(vec1) == 14)
+	assert(vec1:dot(vec1) == vec1:length()*vec1:length())
+	
 	local vec = vector3.new()
 	vec.x = 10
 	vec.y = 2

@@ -780,6 +780,12 @@ local function test_string_find()
 	assert(string.find(str, "哈哈") == nil)
 end
 
+local function test_for_step()
+	for i=1,10,2 do
+		assert(i%2 == 1)
+	end
+end
+
 test_table_del_element()
 test_table_float_key()
 test_table_len()
@@ -831,3 +837,4 @@ test_int_str_key()
 test_weaktable_k()
 test_string_find()
 test_table_sort2()
+test_for_step()

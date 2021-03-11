@@ -780,10 +780,36 @@ local function test_string_find()
 	assert(string.find(str, "哈哈") == nil)
 end
 
+---测试for循环的步长
 local function test_for_step()
 	for i=1,10,2 do
 		assert(i%2 == 1)
 	end
+end
+
+---测试number的具体类型
+function test_number_type()
+	local f = 12.34
+	local i32 = 66788
+	local i64 = 6500000000
+
+	assert("number" == type(f))
+	assert("number" == type(i32))
+	assert("number" == type(i64))
+
+	local function isfloat(v)
+		return math.floor(v) ~= v
+	end
+
+	local function isint64(v)
+		return v > 0x7fffffff or v < -0x80000000
+	end
+
+	assert(isfloat(f))
+	assert(not isfloat(i32))
+	assert(not isfloat(i64))
+	assert(not isint64(i32))
+	assert(isint64(i64))
 end
 
 test_table_del_element()
@@ -838,3 +864,4 @@ test_weaktable_k()
 test_string_find()
 test_table_sort2()
 test_for_step()
+test_number_type()

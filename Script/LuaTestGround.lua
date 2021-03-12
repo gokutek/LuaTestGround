@@ -787,7 +787,7 @@ local function test_for_step()
 	end
 end
 
----测试number的具体类型
+---测试number的具体类型：float、int32、int64
 function test_number_type()
 	local f = 12.34
 	local i32 = 66788
@@ -810,6 +810,27 @@ function test_number_type()
 	assert(not isfloat(i64))
 	assert(not isint64(i32))
 	assert(isint64(i64))
+end
+
+---元表的__index
+function test_mt_index_001()
+	local mod = {}
+	mod.val1 = 6667
+
+	local ins = {}
+	setmetatable(ins, {__index=mod,__newindex=function(t,k,v) rawset(t,k,v) end})
+
+	--ins上没有val1，访问mod.val1
+	assert(ins.val1 == 6667)
+	
+	--将触发__newindex元方法
+	ins.val1 = ins.val1 + 1
+	assert(ins.val1 == 6668)
+	
+	--元表的这个值不会变
+	assert(mod.val1 == 6667)
+
+	--比较绕人的地方是：从一个地方读，但是写却写到另外一个地方
 end
 
 test_table_del_element()
@@ -865,3 +886,4 @@ test_string_find()
 test_table_sort2()
 test_for_step()
 test_number_type()
+test_mt_index_001()

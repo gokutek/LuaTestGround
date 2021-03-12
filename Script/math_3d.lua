@@ -306,6 +306,12 @@ function matrix4x4:det()
 	--TODO:
 end
 
+---矩阵的转置
+---@return matrix4x4
+function matrix4x4:transpose()
+	--TODO:
+end
+
 ---矩阵x矩阵
 function matrix4x4:mul()
 	local result = matrix4x4.new()
